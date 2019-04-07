@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /assets
 WORKDIR /assets
-RUN curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" | tar -xzf -
+# RUN curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" | tar -xzf -
+RUN curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github&version=7.0.0-beta.18" | tar -xzf -
 RUN curl -L "https://github.com/contraband/autopilot/releases/download/0.0.8/autopilot-linux" -o /assets/autopilot
 COPY . /go/src/github.com/concourse/cf-resource
 ENV CGO_ENABLED 0
@@ -24,7 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=builder assets/ /opt/resource/
 RUN chmod +x /opt/resource/*
-RUN mv /opt/resource/cf /usr/bin/cf
+# RUN mv /opt/resource/cf /usr/bin/cf
+RUN mv /opt/resource/cf7 /usr/bin/cf
 RUN mv /opt/resource/autopilot /usr/bin/autopilot
 RUN /usr/bin/cf install-plugin -f /usr/bin/autopilot
 
